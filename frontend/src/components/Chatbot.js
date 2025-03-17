@@ -23,10 +23,6 @@ function Chatbot() {
                 // Stream mode implementation
                 const response = await fetch(`/stream?message=${encodeURIComponent(message)}`);
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let accumulatedResponse = '';
@@ -49,16 +45,12 @@ function Chatbot() {
                     body: new URLSearchParams({ message })
                 });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
                 const data = await response.text();
                 setResponse(data);
             }
         } catch (error) {
             console.error('Error:', error);
-            setResponse('Sorry, something went wrong.');
+            setResponse(`Error: ${error.message}`);
         } finally {
             setIsLoading(false);
         }
